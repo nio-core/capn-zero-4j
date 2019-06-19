@@ -1,6 +1,8 @@
 package de.unikassel.vs.pdDebug;
 
 import com.ochafik.lang.jnaerator.runtime.NativeSize;
+import com.sun.jna.Memory;
+import com.sun.jna.NativeLibrary;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.PointerByReference;
@@ -11,7 +13,6 @@ import static de.unikassel.vs.pdDebug.libzmq.LibZMQLibrary.*;
 public class Subscriber {
     final boolean DEBUG = false;
 
-    final String ADDRESS = "udp://224.0.0.1:5555";
     final String GROUPNAME = "TestGroupName";
 
     private Pointer ctx;
@@ -20,13 +21,39 @@ public class Subscriber {
         //this.ctx = INSTANCE.zmq_ctx_new();
     }
 
-    public void subscribe() {
+    public void subscribe(CommType commType, String address) {
+        final Pointer sub_socket;
+
         IntByReference timeout = new IntByReference(500);
         NativeSize optValLen = new NativeSize(4);
-        final Pointer sub_socket = INSTANCE.zmq_socket(ctx, ZMQ_DISH);
-        check(INSTANCE.zmq_setsockopt(sub_socket, ZMQ_RCVTIMEO, timeout.getPointer(), optValLen), "zmq_setsockopt"); //TODO maybe not only 4
-        check(INSTANCE.zmq_join(sub_socket, GROUPNAME), "zmq_join");
-        check(INSTANCE.zmq_bind(sub_socket, ADDRESS), "zmq_bind");
+
+        String emptyString = "";
+        Pointer m = new Memory(emptyString.length() + 1); // WARNING: assumes ascii-only string
+        m.setString(0, emptyString);
+        NativeSize optValLenM = new NativeSize(0);
+
+        switch (commType) {
+            case UDP:
+                sub_socket = INSTANCE.zmq_socket(ctx, ZMQ_DISH);
+                check(INSTANCE.zmq_setsockopt(sub_socket, ZMQ_RCVTIMEO, timeout.getPointer(), optValLen), "zmq_setsockopt");
+                check(INSTANCE.zmq_join(sub_socket, GROUPNAME), "zmq_join");
+                check(INSTANCE.zmq_bind(sub_socket, "udp://" + address), "zmq_bind");
+                break;
+            case TCP:
+                sub_socket = INSTANCE.zmq_socket(ctx, ZMQ_SUB);
+                check(INSTANCE.zmq_setsockopt(sub_socket, ZMQ_RCVTIMEO, timeout.getPointer(), optValLen), "zmq_setsockopt");
+                check(INSTANCE.zmq_setsockopt(sub_socket, ZMQ_SUBSCRIBE, m, optValLenM), "zmq_setsockopt");
+                check(INSTANCE.zmq_connect(sub_socket, "tcp://" + address), "zmq_connect");
+                break;
+            case IPC:
+                sub_socket = INSTANCE.zmq_socket(ctx, ZMQ_SUB);
+                check(INSTANCE.zmq_setsockopt(sub_socket, ZMQ_RCVTIMEO, timeout.getPointer(), optValLen), "zmq_setsockopt");
+                check(INSTANCE.zmq_setsockopt(sub_socket, ZMQ_SUBSCRIBE, m, optValLenM), "zmq_setsockopt");
+                check(INSTANCE.zmq_connect(sub_socket, "ipc://" + address), "zmq_connect");
+                break;
+            default:
+                sub_socket = null;
+        }
 
 
         Thread t1 = new Thread(new Runnable() {
