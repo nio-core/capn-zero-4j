@@ -22,6 +22,8 @@ public class Publisher {
     static final String TCP_ADDRESS = "127.0.0.1:5555";
     static final String GROUPNAME = "TestGroupName";
 
+    private static Pointer pub_socket;
+
     private Pointer ctx;
 
     public static void main(String[] args) {
@@ -51,6 +53,32 @@ public class Publisher {
                 break;
         }
 
+        pub.start(10);
+        sub.start(10);
+
+    }
+
+    public void start(final int frequenzy) {
+
+        Thread t1 = new Thread(new Runnable() {
+            public void run() {
+                System.out.println("Started Publisher");
+                try {
+                    for (int i = 0; i < frequenzy; i++) {
+                        Thread.sleep(1000);
+
+                        // publish a message
+                        sendMessage("Hallo " + i);
+                        //sendSerializedMessage(i);
+
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        t1.start();
     }
 
     Publisher() {
@@ -58,7 +86,6 @@ public class Publisher {
     }
 
     public void publish(CommType commType, String address) {
-        final Pointer pub_socket;
         switch (commType) {
             case UDP:
                 pub_socket = INSTANCE.zmq_socket(ctx, ZMQ_RADIO);
@@ -77,28 +104,9 @@ public class Publisher {
         }
 
 
-        Thread t1 = new Thread(new Runnable() {
-            public void run() {
-                System.out.println("Started Publisher");
-                try {
-                    for (int i = 0; i < 100; i++) {
-                        Thread.sleep(1000);
-
-                        // publish a message
-                        //sendMessage1(pub_socket, "Hallo " + i);
-                        sendMessage2(i);
-
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        t1.start();
     }
 
-    private void sendMessage1(Pointer socket, String str) {
+    public void sendMessage(String str) {
         zmq_msg_t msg = new zmq_msg_t();
         check(INSTANCE.zmq_msg_init(msg), "zmq_msg_init");
         Memory mem = new Memory(str.length() + 1);
@@ -107,11 +115,11 @@ public class Publisher {
         check(INSTANCE.zmq_msg_init_data(msg, mem, size, null, null), "zmq_msg_init_data");
         check(INSTANCE.zmq_msg_set_group(msg, GROUPNAME), "zmq_msg_set_group");
         System.out.print("Sending on Group \"" + GROUPNAME + "\": \"" + str + "\"");
-        int bytes = INSTANCE.zmq_msg_send(msg, socket, 0);
+        int bytes = INSTANCE.zmq_msg_send(msg, pub_socket, 0);
         System.out.println(" (" + bytes + " bytes)" + "... done");
     }
 
-    private void sendMessage2(int i) {
+    private void sendSerializedMessage(int i) {
         // TODO capnproto message send. MsgBuilder -> Pointer (?)
         org.capnproto.MessageBuilder msgBuilder = new MessageBuilder();
 

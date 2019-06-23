@@ -14,6 +14,7 @@ public class Subscriber {
     final boolean DEBUG = false;
 
     final String GROUPNAME = "TestGroupName";
+    private static Pointer sub_socket;
 
     private Pointer ctx;
 
@@ -22,7 +23,6 @@ public class Subscriber {
     }
 
     public void subscribe(CommType commType, String address) {
-        final Pointer sub_socket;
 
         IntByReference timeout = new IntByReference(500);
         NativeSize optValLen = new NativeSize(4);
@@ -56,27 +56,20 @@ public class Subscriber {
         }
 
 
+    }
+
+    public void start(final int frequenzy) {
         Thread t1 = new Thread(new Runnable() {
             public void run() {
                 System.out.println("Started Subscriber");
 
                 try {
-                    for (int i = 0; i < 10; i++) {
+                    for (int i = 0; i < frequenzy; i++) {
                         Thread.sleep(1000);
 
                         // Some errors :(
 
-                        zmq_msg_t msg = new zmq_msg_t();
-                        check(INSTANCE.zmq_msg_init(msg), "zmq_msg_init");
-                        int bytes = INSTANCE.zmq_msg_recv(msg, sub_socket, 0);
-                        System.out.print("bytes: " + bytes + " | ");
-                        if (bytes > 0) {
-                            Pointer data = INSTANCE.zmq_msg_data(msg);
-                            NativeSize size = INSTANCE.zmq_msg_size(msg);
-                            System.out.print("Received \"" + data.getString(0) + "\".");
-                        }
-                        System.out.println();
-                        check(INSTANCE.zmq_msg_close(msg), "zmq_msg_close");
+                       getMessage();
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -102,5 +95,25 @@ public class Subscriber {
 
     public void setCtx(Pointer ctx) {
         this.ctx = ctx;
+    }
+
+    public String getMessage() {
+
+        String msg_str = "";
+        zmq_msg_t msg = new zmq_msg_t();
+        check(INSTANCE.zmq_msg_init(msg), "zmq_msg_init");
+        int bytes = INSTANCE.zmq_msg_recv(msg, sub_socket, 0);
+        System.out.print("bytes: " + bytes + " | ");
+        if (bytes > 0) {
+            Pointer data = INSTANCE.zmq_msg_data(msg);
+            NativeSize size = INSTANCE.zmq_msg_size(msg);
+            msg_str = data.getString(0);
+            System.out.print("Received \"" + msg_str + "\".");
+        }
+        System.out.println();
+        check(INSTANCE.zmq_msg_close(msg), "zmq_msg_close");
+
+        return msg_str;
+
     }
 }
