@@ -1,56 +1,39 @@
 package de.unikassel.vs.pdDebug;
 
-import org.junit.Assert;
+
+import junit.framework.Assert;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.nio.charset.Charset;
 import java.util.Random;
-import java.util.UUID;
-
-import static org.junit.Assert.*;
 
 public class SubscriberTest {
 
     String toTest;
 
     @Before
-    public void publish() {
+    public void before() {
         int bound = new Random().nextInt(129);
         toTest = generateString(bound);
-    }
 
-    @Test
-    public void testUPD() {
         try {
-            Thread.sleep(1000);
+            Thread.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        //build publisher with UDP
-        Publisher pub = new Publisher();
-        pub.publish(CommType.UDP, Publisher.UDP_ADDRESS);
-
-        Subscriber sub = new Subscriber();
-        sub.setCtx(pub.getCtx());
-        sub.subscribe(CommType.UDP, Publisher.UDP_ADDRESS);
-
-        String msg_send = toTest;
-        pub.sendMessage(msg_send);
-        String msg_recieved = sub.getMessage();
-
-        Assert.assertTrue(msg_send.equals(msg_recieved));
-
     }
+
+    @After
+    public void after() {
+        System.out.println();
+    }
+
+
 
     @Test
     public void testTCP() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
 
         //build publisher with TCP
         Publisher pub = new Publisher();
@@ -70,20 +53,34 @@ public class SubscriberTest {
     }
 
     @Test
-    public void testIPC() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    public void testUPD() {
 
-        //build publisher with IPC
+        //build publisher with UDP
         Publisher pub = new Publisher();
-        pub.publish(CommType.IPC, Publisher.TCP_ADDRESS);
+        pub.publish(CommType.UDP, Publisher.UDP_ADDRESS);
 
         Subscriber sub = new Subscriber();
         sub.setCtx(pub.getCtx());
-        sub.subscribe(CommType.IPC, Publisher.TCP_ADDRESS);
+        sub.subscribe(CommType.UDP, Publisher.UDP_ADDRESS);
+
+        String msg_send = toTest;
+        pub.sendMessage(msg_send);
+        String msg_recieved = sub.getMessage();
+
+        Assert.assertTrue(msg_send.equals(msg_recieved));
+
+    }
+
+    @Test
+    public void testIPC() {
+
+        //build publisher with IPC
+        Publisher pub = new Publisher();
+        pub.publish(CommType.IPC, Publisher.IPC_ADDRESS);
+
+        Subscriber sub = new Subscriber();
+        sub.setCtx(pub.getCtx());
+        sub.subscribe(CommType.IPC, Publisher.IPC_ADDRESS);
 
         String msg_send = toTest;
         pub.sendMessage(msg_send);

@@ -15,11 +15,13 @@ import static de.unikassel.vs.pdDebug.libzmq.LibZMQLibrary.*;
 
 public class Publisher {
 
+
     static final boolean DEBUG = false;
 
-    static final CommType COMM_TYPE = CommType.IPC;
+    static CommType COMM_TYPE = CommType.IPC;
     static final String UDP_ADDRESS = "224.0.0.1:5555";
     static final String TCP_ADDRESS = "127.0.0.1:5555";
+    static final String IPC_ADDRESS = "127.0.0.1:5555";
     static final String GROUPNAME = "TestGroupName";
 
     private static Pointer pub_socket;
@@ -48,8 +50,8 @@ public class Publisher {
                 sub.subscribe(COMM_TYPE, TCP_ADDRESS);
                 break;
             case IPC:
-                pub.publish(COMM_TYPE, TCP_ADDRESS);
-                sub.subscribe(COMM_TYPE, TCP_ADDRESS);
+                pub.publish(COMM_TYPE, IPC_ADDRESS);
+                sub.subscribe(COMM_TYPE, IPC_ADDRESS);
                 break;
         }
 
@@ -86,6 +88,7 @@ public class Publisher {
     }
 
     public void publish(CommType commType, String address) {
+        COMM_TYPE = commType;
         switch (commType) {
             case UDP:
                 pub_socket = INSTANCE.zmq_socket(ctx, ZMQ_RADIO);
@@ -114,7 +117,7 @@ public class Publisher {
         NativeSize size = new NativeSize(str.length() + 1);
         check(INSTANCE.zmq_msg_init_data(msg, mem, size, null, null), "zmq_msg_init_data");
         check(INSTANCE.zmq_msg_set_group(msg, GROUPNAME), "zmq_msg_set_group");
-        System.out.print("Sending on Group \"" + GROUPNAME + "\": \"" + str + "\"");
+        System.out.print("(" + COMM_TYPE.toString() + ") Sending on Group \"" + GROUPNAME + "\": \"" + str + "\"");
         int bytes = INSTANCE.zmq_msg_send(msg, pub_socket, 0);
         System.out.println(" (" + bytes + " bytes)" + "... done");
     }
