@@ -2,13 +2,12 @@ package de.unikassel.vs.pdDebug;
 
 import com.ochafik.lang.jnaerator.runtime.NativeSize;
 import com.sun.jna.Memory;
-import com.sun.jna.NativeLibrary;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
-import com.sun.jna.ptr.PointerByReference;
 import de.unikassel.vs.pdDebug.libzmq.zmq_msg_t;
 
 import static de.unikassel.vs.pdDebug.libzmq.LibZMQLibrary.*;
+
 
 public class Subscriber {
     final boolean DEBUG = false;
@@ -115,5 +114,10 @@ public class Subscriber {
 
         return msg_str;
 
+    }
+
+    //TODO Receive serialized String
+    public String getSerializedMessage() {
+        return "";
     }
 }

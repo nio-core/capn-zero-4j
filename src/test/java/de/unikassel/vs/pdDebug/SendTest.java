@@ -7,7 +7,7 @@ import org.junit.jupiter.api.*;
 import java.util.Random;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class SubscriberTest {
+public class SendTest {
 
     String toTest;
 
@@ -43,13 +43,7 @@ public class SubscriberTest {
         sub.setCtx(pub.getCtx());
         sub.subscribe(CommType.TCP, Publisher.TCP_ADDRESS);
 
-        String msg_send = toTest;
-        pub.sendMessage(msg_send);
-        String msg_recieved = sub.getMessage();
-
-        Assert.assertTrue(msg_send.equals(msg_recieved));
-
-
+        testMessage(pub, sub);
     }
 
     @Test
@@ -64,12 +58,7 @@ public class SubscriberTest {
         sub.setCtx(pub.getCtx());
         sub.subscribe(CommType.UDP, Publisher.UDP_ADDRESS);
 
-        String msg_send = toTest;
-        pub.sendMessage(msg_send);
-        String msg_recieved = sub.getMessage();
-
-        Assert.assertTrue(msg_send.equals(msg_recieved));
-
+        testMessage(pub, sub);
     }
 
     @Test
@@ -84,12 +73,15 @@ public class SubscriberTest {
         sub.setCtx(pub.getCtx());
         sub.subscribe(CommType.IPC, Publisher.IPC_ADDRESS);
 
+        testMessage(pub, sub);
+    }
+
+    private void testMessage(Publisher pub, Subscriber sub) {
         String msg_send = toTest;
         pub.sendMessage(msg_send);
-        String msg_recieved = sub.getMessage();
+        String msg_received = sub.getMessage();
 
-        Assert.assertTrue(msg_send.equals(msg_recieved));
-
+        Assert.assertTrue(msg_send.equals(msg_received));
     }
 
     /**

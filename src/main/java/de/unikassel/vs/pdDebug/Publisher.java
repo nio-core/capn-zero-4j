@@ -21,7 +21,7 @@ public class Publisher {
     static CommType COMM_TYPE = CommType.IPC;
     static final String UDP_ADDRESS = "224.0.0.1:5555";
     static final String TCP_ADDRESS = "127.0.0.1:5555";
-    static final String IPC_ADDRESS = "127.0.0.1:5555";
+    static final String IPC_ADDRESS = "128.0.0.1:5555";
     static final String GROUPNAME = "TestGroupName";
 
     private static Pointer pub_socket;
@@ -122,7 +122,11 @@ public class Publisher {
         System.out.println(" (" + bytes + " bytes)" + "... done");
     }
 
-    private void sendSerializedMessage(int i) {
+    //TODO Send serialized String
+    public void sendSerializedMessage(String msg_send) {
+    }
+
+    public void sendSerializedMessage(int i) {
         // TODO capnproto message send. MsgBuilder -> Pointer (?)
         org.capnproto.MessageBuilder msgBuilder = new MessageBuilder();
 
@@ -156,4 +160,6 @@ public class Publisher {
     public void setCtx(Pointer ctx) {
         this.ctx = ctx;
     }
+
+
 }
