@@ -2,17 +2,16 @@ package de.unikassel.vs.pdDebug;
 
 
 import junit.framework.Assert;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.*;
 
 import java.util.Random;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class SubscriberTest {
 
     String toTest;
 
-    @Before
+    @BeforeEach
     public void before() {
         int bound = new Random().nextInt(129);
         toTest = generateString(bound);
@@ -24,7 +23,7 @@ public class SubscriberTest {
         }
     }
 
-    @After
+    @AfterEach
     public void after() {
         System.out.println();
     }
@@ -32,6 +31,7 @@ public class SubscriberTest {
 
 
     @Test
+    @Order(1)
     public void testTCP() {
 
 
@@ -53,6 +53,7 @@ public class SubscriberTest {
     }
 
     @Test
+    @Order(2)
     public void testUPD() {
 
         //build publisher with UDP
@@ -72,6 +73,7 @@ public class SubscriberTest {
     }
 
     @Test
+    @Order(3)
     public void testIPC() {
 
         //build publisher with IPC
