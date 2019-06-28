@@ -12,16 +12,24 @@ import static de.unikassel.vs.pdDebug.libzmq.LibZMQLibrary.*;
 public class Subscriber {
     final boolean DEBUG = false;
 
-    final String GROUPNAME = "TestGroupName";
-    private static Pointer sub_socket;
-
-    private Pointer ctx;
+    private CommType commType = CommType.UDP;
+    private String groupName = "TestGroupName";
+    private Pointer socket;
+    private Pointer context;
+    private boolean running = true;
 
     Subscriber() {
-        //this.ctx = INSTANCE.zmq_ctx_new();
+        this.context = INSTANCE.zmq_ctx_new();
+    }
+
+    public void destroy() {
+        check(INSTANCE.zmq_close(socket), "zmq_close");
+        check(INSTANCE.zmq_ctx_term(context), "zmq_ctx_term");
+        this.running = false;
     }
 
     public void subscribe(CommType commType, String address) {
+        this.commType = commType;
 
         IntByReference timeout = new IntByReference(500);
         NativeSize optValLen = new NativeSize(4);
@@ -33,43 +41,50 @@ public class Subscriber {
 
         switch (commType) {
             case UDP:
-                sub_socket = INSTANCE.zmq_socket(ctx, ZMQ_DISH);
-                check(INSTANCE.zmq_setsockopt(sub_socket, ZMQ_RCVTIMEO, timeout.getPointer(), optValLen), "zmq_setsockopt");
-                check(INSTANCE.zmq_join(sub_socket, GROUPNAME), "zmq_join");
-                check(INSTANCE.zmq_bind(sub_socket, "udp://" + address), "zmq_bind");
+                socket = INSTANCE.zmq_socket(context, ZMQ_DISH);
+                check(INSTANCE.zmq_setsockopt(socket, ZMQ_RCVTIMEO, timeout.getPointer(), optValLen), "zmq_setsockopt");
+                check(INSTANCE.zmq_join(socket, groupName), "zmq_join");
+                check(INSTANCE.zmq_bind(socket, "udp://" + address), "zmq_bind");
                 break;
             case TCP:
-                sub_socket = INSTANCE.zmq_socket(ctx, ZMQ_SUB);
-                check(INSTANCE.zmq_setsockopt(sub_socket, ZMQ_RCVTIMEO, timeout.getPointer(), optValLen), "zmq_setsockopt");
-                check(INSTANCE.zmq_setsockopt(sub_socket, ZMQ_SUBSCRIBE, m, optValLenM), "zmq_setsockopt");
-                check(INSTANCE.zmq_connect(sub_socket, "tcp://" + address), "zmq_connect");
+                socket = INSTANCE.zmq_socket(context, ZMQ_SUB);
+                check(INSTANCE.zmq_setsockopt(socket, ZMQ_RCVTIMEO, timeout.getPointer(), optValLen), "zmq_setsockopt");
+                check(INSTANCE.zmq_setsockopt(socket, ZMQ_SUBSCRIBE, m, optValLenM), "zmq_setsockopt");
+                check(INSTANCE.zmq_connect(socket, "tcp://" + address), "zmq_connect");
                 break;
             case IPC:
-                sub_socket = INSTANCE.zmq_socket(ctx, ZMQ_SUB);
-                check(INSTANCE.zmq_setsockopt(sub_socket, ZMQ_RCVTIMEO, timeout.getPointer(), optValLen), "zmq_setsockopt");
-                check(INSTANCE.zmq_setsockopt(sub_socket, ZMQ_SUBSCRIBE, m, optValLenM), "zmq_setsockopt");
-                check(INSTANCE.zmq_connect(sub_socket, "ipc://" + address), "zmq_connect");
+                socket = INSTANCE.zmq_socket(context, ZMQ_SUB);
+                check(INSTANCE.zmq_setsockopt(socket, ZMQ_RCVTIMEO, timeout.getPointer(), optValLen), "zmq_setsockopt");
+                check(INSTANCE.zmq_setsockopt(socket, ZMQ_SUBSCRIBE, m, optValLenM), "zmq_setsockopt");
+                check(INSTANCE.zmq_connect(socket, "ipc://" + address), "zmq_connect");
                 break;
             default:
-                sub_socket = null;
+                socket = null;
         }
 
 
     }
 
-    public void start(final int frequenzy) {
+    public void start(final int frequenzy, final boolean serialized) {
         Thread t1 = new Thread(new Runnable() {
             public void run() {
-                System.out.println("Started Subscriber");
 
                 try {
+                    System.out.println("Started Subscriber");
                     for (int i = 0; i < frequenzy; i++) {
                         Thread.sleep(1000);
 
-                        // Some errors :(
-
-                       getMessage();
+                        if (serialized) {
+                            getSerializedMessage();
+                        } else {
+                            getMessage();
+                        }
                     }
+
+                    // wait to receive the last messages
+                    Thread.sleep(frequenzy);
+                    destroy();
+                    System.out.println("Closed Subscriber");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -88,12 +103,9 @@ public class Subscriber {
         }
     }
 
-    public Pointer getCtx() {
-        return ctx;
-    }
-
-    public void setCtx(Pointer ctx) {
-        this.ctx = ctx;
+    //TODO Receive serialized String
+    public String getSerializedMessage() {
+        return "";
     }
 
     public String getMessage() {
@@ -101,7 +113,9 @@ public class Subscriber {
         String msg_str = "";
         zmq_msg_t msg = new zmq_msg_t();
         check(INSTANCE.zmq_msg_init(msg), "zmq_msg_init");
-        int bytes = INSTANCE.zmq_msg_recv(msg, sub_socket, 0);
+
+        int bytes = INSTANCE.zmq_msg_recv(msg, socket, 0);
+
         System.out.print("bytes: " + bytes + " | ");
         if (bytes > 0) {
             Pointer data = INSTANCE.zmq_msg_data(msg);
@@ -113,11 +127,29 @@ public class Subscriber {
         check(INSTANCE.zmq_msg_close(msg), "zmq_msg_close");
 
         return msg_str;
-
     }
 
-    //TODO Receive serialized String
-    public String getSerializedMessage() {
-        return "";
+    public Pointer getContext() {
+        return context;
+    }
+
+    public void setContext(Pointer context) {
+        this.context = context;
+    }
+
+    public Pointer getSocket() {
+        return socket;
+    }
+
+    public CommType getCommType() {
+        return commType;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 }
