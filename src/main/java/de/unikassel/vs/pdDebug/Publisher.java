@@ -5,28 +5,23 @@ import com.sun.jna.Memory;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 
+import de.unikassel.vs.pdDebug.capnzero.Capnzero;
 import de.unikassel.vs.pdDebug.libzmq.zmq_msg_t;
-import org.capnproto.MessageBuilder;
-
-import java.nio.ByteBuffer;
-import java.util.UUID;
 
 import static de.unikassel.vs.pdDebug.libzmq.LibZMQLibrary.*;
 
 public class Publisher {
 
-
     static final boolean DEBUG = false;
 
-    static CommType COMM_TYPE = CommType.IPC;
     static final String UDP_ADDRESS = "224.0.0.1:5555";
     static final String TCP_ADDRESS = "127.0.0.1:5555";
     static final String IPC_ADDRESS = "128.0.0.1:5555";
-    static final String GROUPNAME = "TestGroupName";
 
-    private static Pointer pub_socket;
-
-    private Pointer ctx;
+    private CommType commType = CommType.UDP;
+    private String groupName;
+    private Pointer socket;
+    private Pointer context;
 
     public static void main(String[] args) {
 
@@ -38,42 +33,55 @@ public class Publisher {
 
         Publisher pub = new Publisher();
         Subscriber sub = new Subscriber();
-        sub.setCtx(pub.getCtx());
+        //sub.setContext(pub.getContext());
 
-        switch (COMM_TYPE) {
+        switch (pub.commType) {
             case UDP:
-                pub.publish(COMM_TYPE, UDP_ADDRESS);
-                sub.subscribe(COMM_TYPE, UDP_ADDRESS);
+                pub.bind(pub.commType, UDP_ADDRESS);
+                sub.subscribe(pub.commType, UDP_ADDRESS);
                 break;
             case TCP:
-                pub.publish(COMM_TYPE, TCP_ADDRESS);
-                sub.subscribe(COMM_TYPE, TCP_ADDRESS);
+                pub.bind(pub.commType, TCP_ADDRESS);
+                sub.subscribe(pub.commType, TCP_ADDRESS);
                 break;
             case IPC:
-                pub.publish(COMM_TYPE, IPC_ADDRESS);
-                sub.subscribe(COMM_TYPE, IPC_ADDRESS);
+                pub.bind(pub.commType, IPC_ADDRESS);
+                sub.subscribe(pub.commType, IPC_ADDRESS);
                 break;
         }
 
-        pub.start(10);
-        sub.start(10);
+
+        // Start Publisher and subscriber
+        try {
+            pub.start(10, false);
+            Thread.sleep(100);
+            sub.start(10, false);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
     }
 
-    public void start(final int frequenzy) {
+    public void start(final int frequenzy, final boolean serialized) {
 
         Thread t1 = new Thread(new Runnable() {
             public void run() {
-                System.out.println("Started Publisher");
                 try {
+                    System.out.println("Started Publisher");
                     for (int i = 0; i < frequenzy; i++) {
                         Thread.sleep(1000);
 
-                        // publish a message
-                        sendMessage("Hallo " + i);
-                        //sendSerializedMessage(i);
-
+                        // send a message
+                        if (serialized) {
+                            sendSerializedMessage("Hallo " + i);
+                        } else {
+                            sendMessage("Hallo " + i);
+                        }
                     }
+
+                    destroy();
+                    System.out.println("Closed Publisher");
+
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -83,65 +91,55 @@ public class Publisher {
         t1.start();
     }
 
-    Publisher() {
-        this.ctx = INSTANCE.zmq_ctx_new();
+    public Publisher() {
+        this.context = INSTANCE.zmq_ctx_new();
+        this.groupName = "TestGroupName";
     }
 
-    public void publish(CommType commType, String address) {
-        COMM_TYPE = commType;
+    public void destroy() {
+        check(INSTANCE.zmq_close(socket), "zmq_close");
+        check(INSTANCE.zmq_ctx_term(context), "zmq_ctx_term");
+    }
+
+    public void bind(CommType commType, String address) {
+        this.commType = commType;
         switch (commType) {
             case UDP:
-                pub_socket = INSTANCE.zmq_socket(ctx, ZMQ_RADIO);
-                check(INSTANCE.zmq_connect(pub_socket, "udp://" + address), "zmq_connect");
+                socket = INSTANCE.zmq_socket(context, ZMQ_RADIO);
+                check(INSTANCE.zmq_connect(socket, "udp://" + address), "zmq_connect");
                 break;
             case TCP:
-                pub_socket = INSTANCE.zmq_socket(ctx, ZMQ_PUB);
-                check(INSTANCE.zmq_bind(pub_socket, "tcp://" + address), "zmq_bind");
+                socket = INSTANCE.zmq_socket(context, ZMQ_PUB);
+                check(INSTANCE.zmq_bind(socket, "tcp://" + address), "zmq_bind");
                 break;
             case IPC:
-                pub_socket = INSTANCE.zmq_socket(ctx, ZMQ_PUB);
-                check(INSTANCE.zmq_bind(pub_socket, "ipc://" + address), "zmq_bind");
+                socket = INSTANCE.zmq_socket(context, ZMQ_PUB);
+                check(INSTANCE.zmq_bind(socket, "ipc://" + address), "zmq_bind");
                 break;
             default:
-                pub_socket = null;
+                socket = null;
         }
-
-
     }
+
 
     public void sendMessage(String str) {
         zmq_msg_t msg = new zmq_msg_t();
         check(INSTANCE.zmq_msg_init(msg), "zmq_msg_init");
         Memory mem = new Memory(str.length() + 1);
         mem.setString(0, str);
-        NativeSize size = new NativeSize(str.length() + 1);
+        NativeSize size = new NativeSize(str.length());
         check(INSTANCE.zmq_msg_init_data(msg, mem, size, null, null), "zmq_msg_init_data");
-        check(INSTANCE.zmq_msg_set_group(msg, GROUPNAME), "zmq_msg_set_group");
-        System.out.print("(" + COMM_TYPE.toString() + ") Sending on Group \"" + GROUPNAME + "\": \"" + str + "\"");
-        int bytes = INSTANCE.zmq_msg_send(msg, pub_socket, 0);
-        System.out.println(" (" + bytes + " bytes)" + "... done");
+        check(INSTANCE.zmq_msg_set_group(msg, groupName), "zmq_msg_set_group");
+        System.out.print("(" + commType.toString() + ") Sending on Group \"" + groupName + "\": \"" + str + "\"");
+        int bytes = INSTANCE.zmq_msg_send(msg, socket, 0);
+        System.out.println(" (" + bytes + " bytes)" + (bytes < 0 ? "... FAILED" : "... OK"));
+        check(INSTANCE.zmq_msg_close(msg), "zmq_msg_close");
     }
 
-    //TODO Send serialized String
     public void sendSerializedMessage(String msg_send) {
-    }
-
-    public void sendSerializedMessage(int i) {
-        // TODO capnproto message send. MsgBuilder -> Pointer (?)
-        org.capnproto.MessageBuilder msgBuilder = new MessageBuilder();
-
-        de.unikassel.vs.pdDebug.Beacon.BeaconStruct.Builder beaconMsgBuilder = msgBuilder.initRoot(de.unikassel.vs.pdDebug.Beacon.BeaconStruct.factory);
-
-        beaconMsgBuilder.setIp("224.0.0.1");
-        beaconMsgBuilder.setPort((short) i);
-        beaconMsgBuilder.setUuid(UUID.randomUUID().toString().getBytes());
-
-        ByteBuffer[] segmentsForOutput = msgBuilder.getSegmentsForOutput();
-        zmq_msg_t msg = new zmq_msg_t();
-        check(INSTANCE.zmq_msg_init(msg), "zmq_msg_init");
-        Memory mem = new Memory(64);
-        check(INSTANCE.zmq_msg_init_data(msg, mem, new NativeSize(64), null, null), "zmq_msg_init_data");
-
+        System.out.print("(" + commType.toString() + ") Sending on Group \"" + groupName + "\": \"" + msg_send + "\"");
+        int numBytesSent = Capnzero.sendMessage(this.socket, this.commType.ordinal(), this.groupName, msg_send);
+        System.out.println(" (" + numBytesSent + " bytes)" + (numBytesSent < 0 ? "... FAILED" : "... OK"));
     }
 
     private void check(int returnCode, String nameOfMethod) {
@@ -153,13 +151,27 @@ public class Publisher {
         }
     }
 
-    public Pointer getCtx() {
-        return ctx;
+    public Pointer getContext() {
+        return context;
     }
 
-    public void setCtx(Pointer ctx) {
-        this.ctx = ctx;
+    public void setContext(Pointer context) {
+        this.context = context;
     }
 
+    public Pointer getSocket() {
+        return socket;
+    }
 
+    public CommType getCommType() {
+        return commType;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
 }
