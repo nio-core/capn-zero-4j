@@ -9,10 +9,16 @@ import java.util.Random;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class SendTest {
 
+    Publisher pub;
+    Subscriber sub;
     String toTest;
 
     @BeforeEach
     public void before() {
+
+        pub = new Publisher();
+        sub = new Subscriber();
+
         int bound = new Random().nextInt(129);
         toTest = generateString(bound);
 
@@ -25,6 +31,8 @@ public class SendTest {
 
     @AfterEach
     public void after() {
+        pub.destroy();
+        sub.destroy();
         System.out.println();
     }
 
@@ -33,14 +41,8 @@ public class SendTest {
     @Test
     @Order(1)
     public void testTCP() {
-
-
         //build publisher with TCP
-        Publisher pub = new Publisher();
-        pub.publish(CommType.TCP, Publisher.TCP_ADDRESS);
-
-        Subscriber sub = new Subscriber();
-        sub.setCtx(pub.getCtx());
+        pub.bind(CommType.TCP, Publisher.TCP_ADDRESS);
         sub.subscribe(CommType.TCP, Publisher.TCP_ADDRESS);
 
         testMessage(pub, sub);
@@ -49,13 +51,8 @@ public class SendTest {
     @Test
     @Order(2)
     public void testUPD() {
-
         //build publisher with UDP
-        Publisher pub = new Publisher();
-        pub.publish(CommType.UDP, Publisher.UDP_ADDRESS);
-
-        Subscriber sub = new Subscriber();
-        sub.setCtx(pub.getCtx());
+        pub.bind(CommType.UDP, Publisher.UDP_ADDRESS);
         sub.subscribe(CommType.UDP, Publisher.UDP_ADDRESS);
 
         testMessage(pub, sub);
@@ -64,24 +61,24 @@ public class SendTest {
     @Test
     @Order(3)
     public void testIPC() {
-
         //build publisher with IPC
-        Publisher pub = new Publisher();
-        pub.publish(CommType.IPC, Publisher.IPC_ADDRESS);
-
-        Subscriber sub = new Subscriber();
-        sub.setCtx(pub.getCtx());
+        pub.bind(CommType.IPC, Publisher.IPC_ADDRESS);
         sub.subscribe(CommType.IPC, Publisher.IPC_ADDRESS);
 
         testMessage(pub, sub);
     }
 
     private void testMessage(Publisher pub, Subscriber sub) {
-        String msg_send = toTest;
-        pub.sendMessage(msg_send);
-        String msg_received = sub.getMessage();
+        try {
+            String msg_send = toTest;
+            pub.sendMessage(msg_send);
+            Thread.sleep(300);
+            String msg_received = sub.getMessage();
 
-        Assert.assertTrue(msg_send.equals(msg_received));
+            Assert.assertTrue(msg_send.equals(msg_received));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

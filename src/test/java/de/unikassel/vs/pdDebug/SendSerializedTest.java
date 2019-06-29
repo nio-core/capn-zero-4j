@@ -37,10 +37,10 @@ public class SendSerializedTest {
 
         //build publisher with TCP
         Publisher pub = new Publisher();
-        pub.publish(CommType.TCP, Publisher.TCP_ADDRESS);
+        pub.bind(CommType.TCP, Publisher.TCP_ADDRESS);
 
         Subscriber sub = new Subscriber();
-        sub.setCtx(pub.getCtx());
+        sub.setContext(pub.getContext());
         sub.subscribe(CommType.TCP, Publisher.TCP_ADDRESS);
 
         testMessage(pub, sub);
@@ -56,10 +56,10 @@ public class SendSerializedTest {
 
         //build publisher with UDP
         Publisher pub = new Publisher();
-        pub.publish(CommType.UDP, Publisher.UDP_ADDRESS);
+        pub.bind(CommType.UDP, Publisher.UDP_ADDRESS);
 
         Subscriber sub = new Subscriber();
-        sub.setCtx(pub.getCtx());
+        sub.setContext(pub.getContext());
         sub.subscribe(CommType.UDP, Publisher.UDP_ADDRESS);
 
         testMessage(pub, sub);
@@ -72,10 +72,10 @@ public class SendSerializedTest {
 
         //build publisher with IPC
         Publisher pub = new Publisher();
-        pub.publish(CommType.IPC, Publisher.IPC_ADDRESS);
+        pub.bind(CommType.IPC, Publisher.IPC_ADDRESS);
 
         Subscriber sub = new Subscriber();
-        sub.setCtx(pub.getCtx());
+        sub.setContext(pub.getContext());
         sub.subscribe(CommType.IPC, Publisher.IPC_ADDRESS);
 
         testMessage(pub, sub);
