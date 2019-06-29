@@ -4,24 +4,18 @@ package de.unikassel.vs.pdDebug;
 import junit.framework.Assert;
 import org.junit.jupiter.api.*;
 
-import java.util.Random;
-
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class SendTest {
 
     Publisher pub;
     Subscriber sub;
-    String toTest;
+    static final int testSize = 5;
 
     @BeforeEach
     public void before() {
 
         pub = new Publisher();
         sub = new Subscriber();
-
-        int bound = new Random().nextInt(129);
-        toTest = generateString(bound);
-
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
@@ -29,13 +23,20 @@ public class SendTest {
         }
     }
 
-    @AfterEach
-    public void after() {
-        pub.destroy();
-        sub.destroy();
-        System.out.println();
-    }
+    private void testMessage(Publisher pub, Subscriber sub) {
+        for (int i = 0; i < testSize; i++) {
+            try {
+                String msg_send = TestTools.randomString();
+                pub.sendMessage(msg_send);
+                Thread.sleep(300);
+                String msg_received = sub.getMessage();
 
+                Assert.assertTrue(msg_send.equals(msg_received));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 
     @Test
@@ -68,36 +69,5 @@ public class SendTest {
         testMessage(pub, sub);
     }
 
-    private void testMessage(Publisher pub, Subscriber sub) {
-        try {
-            String msg_send = toTest;
-            pub.sendMessage(msg_send);
-            Thread.sleep(300);
-            String msg_received = sub.getMessage();
 
-            Assert.assertTrue(msg_send.equals(msg_received));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * create a random String of length n
-     */
-    public static String generateString(int n)
-    {
-
-        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                + "0123456789"
-                + "abcdefghijklmnopqrstuvxyz";
-
-        StringBuilder sb = new StringBuilder(n);
-
-        for (int i = 0; i < n; i++) {
-            int index = (int)(AlphaNumericString.length() * Math.random());
-            sb.append(AlphaNumericString.charAt(index));
-        }
-
-        return sb.toString();
-    }
 }

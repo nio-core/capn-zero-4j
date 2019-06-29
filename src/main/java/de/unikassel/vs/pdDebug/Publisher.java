@@ -16,7 +16,7 @@ public class Publisher {
 
     static final String UDP_ADDRESS = "224.0.0.1:5555";
     static final String TCP_ADDRESS = "127.0.0.1:5555";
-    static final String IPC_ADDRESS = "127.0.0.1:5555";
+    static final String IPC_ADDRESS = "128.0.0.1:5555";
 
     private CommType commType = CommType.UDP;
     private String groupName;
@@ -120,6 +120,7 @@ public class Publisher {
                 socket = null;
         }
     }
+
 
     public void sendMessage(String str) {
         zmq_msg_t msg = new zmq_msg_t();

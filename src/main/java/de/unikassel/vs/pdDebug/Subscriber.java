@@ -22,6 +22,10 @@ public class Subscriber {
         this.context = INSTANCE.zmq_ctx_new();
     }
 
+    Subscriber(Pointer context) {
+        this.context = context;
+    }
+
     public void destroy() {
         check(INSTANCE.zmq_close(socket), "zmq_close");
         check(INSTANCE.zmq_ctx_term(context), "zmq_ctx_term");
@@ -120,7 +124,7 @@ public class Subscriber {
         if (bytes > 0) {
             Pointer data = INSTANCE.zmq_msg_data(msg);
             NativeSize size = INSTANCE.zmq_msg_size(msg);
-            msg_str = data.getString(0);
+            msg_str = data.getString(0).substring(0, size.intValue());
             System.out.print("Received \"" + msg_str + "\".");
         }
         System.out.println();
