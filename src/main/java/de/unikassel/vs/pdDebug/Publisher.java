@@ -98,6 +98,9 @@ public class Publisher {
 
     public void destroy() {
         check(INSTANCE.zmq_close(socket), "zmq_close");
+    }
+
+    public void term() {
         check(INSTANCE.zmq_ctx_term(context), "zmq_ctx_term");
     }
 

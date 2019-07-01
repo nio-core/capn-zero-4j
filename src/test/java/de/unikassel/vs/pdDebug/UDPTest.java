@@ -14,14 +14,13 @@ public class UDPTest {
     Subscriber sub;
     TestTools util;
 
-    static final int socketSize = 100;
+    static final int socketSize = 1000;
     static final int testSize = 10;
     ArrayList<Subscriber> subList = new ArrayList<>();
     ArrayList<Publisher> pubList = new ArrayList<>();
 
     @BeforeEach
     public void before() {
-
         util = new TestTools();
         pub = new Publisher();
         pubList.add(pub);
@@ -41,6 +40,13 @@ public class UDPTest {
         }
         for (Publisher pub : pubList) {
             pub.destroy();
+        }
+
+        for (Subscriber sub : subList) {
+            sub.term();
+        }
+        for (Publisher pub : pubList) {
+            pub.term();
         }
         System.out.println();
     }

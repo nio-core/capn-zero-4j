@@ -21,7 +21,6 @@ public class IPCTest {
 
     @BeforeEach
     public void before() {
-
         util = new TestTools();
         pub = new Publisher();
         pubList.add(pub);
@@ -41,6 +40,13 @@ public class IPCTest {
         }
         for (Publisher pub : pubList) {
             pub.destroy();
+        }
+
+        for (Subscriber sub : subList) {
+            sub.term();
+        }
+        for (Publisher pub : pubList) {
+            pub.term();
         }
         System.out.println();
     }

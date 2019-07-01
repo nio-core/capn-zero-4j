@@ -7,38 +7,6 @@ import java.util.Random;
 
 public class TestTools {
 
-    /**
-     * generate a random String to send
-     */
-    public static String randomString() {
-        int bound = new Random().nextInt(128) +1;
-        return generateString(bound);
-    }
-
-    public static String randomGroupName() {
-        return generateString(13);
-    }
-
-    /**
-     * create a random String of length n
-     */
-    private static String generateString(int n)
-    {
-
-        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                + "0123456789"
-                + "abcdefghijklmnopqrstuvxyz";
-
-        StringBuilder sb = new StringBuilder(n);
-
-        for (int i = 0; i < n; i++) {
-            int index = (int)(AlphaNumericString.length() * Math.random());
-            sb.append(AlphaNumericString.charAt(index));
-        }
-
-        return sb.toString();
-    }
-
     public void testOnePubManySub(ArrayList<Publisher> pubList, ArrayList<Subscriber> subList, int socketSize, int testSize, CommType type, String address) {
 
         Publisher pub = new Publisher();
@@ -121,5 +89,38 @@ public class TestTools {
                 e.printStackTrace();
             }
         }
+    }
+    
+
+    /**
+     * generate a random String to send
+     */
+    public static String randomString() {
+        int bound = new Random().nextInt(128) +1;
+        return generateString(bound);
+    }
+
+    public static String randomGroupName() {
+        return generateString(13);
+    }
+
+    /**
+     * create a random String of length n
+     */
+    private static String generateString(int n)
+    {
+
+        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                + "0123456789"
+                + "abcdefghijklmnopqrstuvxyz";
+
+        StringBuilder sb = new StringBuilder(n);
+
+        for (int i = 0; i < n; i++) {
+            int index = (int)(AlphaNumericString.length() * Math.random());
+            sb.append(AlphaNumericString.charAt(index));
+        }
+
+        return sb.toString();
     }
 }

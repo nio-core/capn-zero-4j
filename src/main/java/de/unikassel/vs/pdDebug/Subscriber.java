@@ -16,10 +16,9 @@ public class Subscriber {
     private String groupName = "TestGroupName";
     private Pointer socket;
     private Pointer context;
-    private boolean running = true;
 
     Subscriber() {
-        this.context = INSTANCE.zmq_ctx_new();
+        this(INSTANCE.zmq_ctx_new());
     }
 
     Subscriber(Pointer context) {
@@ -28,8 +27,10 @@ public class Subscriber {
 
     public void destroy() {
         check(INSTANCE.zmq_close(socket), "zmq_close");
+    }
+
+    public void term() {
         check(INSTANCE.zmq_ctx_term(context), "zmq_ctx_term");
-        this.running = false;
     }
 
     public void subscribe(CommType commType, String address) {
