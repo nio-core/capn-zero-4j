@@ -4,6 +4,7 @@ import com.ochafik.lang.jnaerator.runtime.NativeSize;
 import com.sun.jna.Memory;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
+import de.unikassel.vs.pdDebug.capnzero.Capnzero;
 import de.unikassel.vs.pdDebug.libzmq.zmq_msg_t;
 
 import static de.unikassel.vs.pdDebug.libzmq.LibZMQLibrary.*;
@@ -108,9 +109,8 @@ public class Subscriber {
         }
     }
 
-    //TODO Receive serialized String
     public String getSerializedMessage() {
-        return "";
+        return Capnzero.receiveSerializedMessage(socket, commType.ordinal());
     }
 
     public String getMessage() {
