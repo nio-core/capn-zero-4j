@@ -110,7 +110,9 @@ public class Subscriber {
     }
 
     public String getSerializedMessage() {
-        return Capnzero.receiveSerializedMessage(socket, commType.ordinal());
+        String message = Capnzero.receiveSerializedMessage(socket, commType.ordinal());
+        System.out.println("Received \"" + message + "\".");
+        return message;
     }
 
     public String getMessage() {
