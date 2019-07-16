@@ -8,13 +8,15 @@ import com.sun.jna.ptr.IntByReference;
 import de.unikassel.vs.pdDebug.capnzero.Capnzero;
 import de.unikassel.vs.pdDebug.libzmq.zmq_msg_t;
 
+import java.nio.IntBuffer;
+
 import static de.unikassel.vs.pdDebug.libzmq.LibZMQLibrary.*;
 
 public class Publisher {
 
     static final boolean DEBUG = false;
 
-    static final String UDP_ADDRESS = "224.0.0.1:5555";
+    static final String UDP_ADDRESS = "224.0.0.2:5555";
     static final String TCP_ADDRESS = "127.0.0.1:5555";
     static final String IPC_ADDRESS = "128.0.0.1:5555";
 
@@ -25,11 +27,11 @@ public class Publisher {
 
     public static void main(String[] args) {
 
-        IntByReference major = new IntByReference();
-        IntByReference minor = new IntByReference();
-        IntByReference patch = new IntByReference();
+        IntBuffer major = IntBuffer.allocate(1);
+        IntBuffer minor = IntBuffer.allocate(1);
+        IntBuffer patch = IntBuffer.allocate(1);
         INSTANCE.zmq_version(major, minor, patch);
-        System.out.println("ZMQ Version: (" + major.getValue() + ", " + minor.getValue() + ", " + patch.getValue() + ")");
+        System.out.println("ZMQ Version: (" + major.get() + ", " + minor.get() + ", " + patch.get() + ")");
 
         Publisher pub = new Publisher();
         Subscriber sub = new Subscriber();
@@ -53,9 +55,9 @@ public class Publisher {
 
         // Start Publisher and subscriber
         try {
-            pub.start(10, false);
+            pub.start(10, true);
             Thread.sleep(100);
-            sub.start(10, false);
+            sub.start(10, true);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

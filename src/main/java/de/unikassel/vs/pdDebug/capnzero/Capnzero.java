@@ -9,9 +9,7 @@ public class Capnzero {
     public static native String receiveSerializedMessage(Pointer socket, int commType);
 
     static {
-        // only works if LD_LIBRARY_PATH includes /path/to/ros-ws/devel/lib and you have
-        // built the catkin-workspace with capnzerowrapper included.
-        // https://github.com/xlink9x/capnzerowrapper/
+        // https://github.com/dasys-lab/capnzerowrapper/
         Native.register("capnzerowrapper");
     }
 }

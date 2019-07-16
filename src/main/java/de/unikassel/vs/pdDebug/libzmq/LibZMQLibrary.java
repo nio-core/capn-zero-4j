@@ -18,393 +18,397 @@ import java.nio.IntBuffer;
  * a tool written by <a href="http://ochafik.com/">Olivier Chafik</a> that <a href="http://code.google.com/p/jnaerator/wiki/CreditsAndLicense">uses a few opensource projects.</a>.<br>
  * For help, please visit <a href="https://github.com/nativelibs4java">NativeLibs4Java</a> , <a href="http://rococoa.dev.java.net/">Rococoa</a>, or <a href="http://jna.dev.java.net/">JNA</a>.
  */
+@SuppressWarnings({"unused", "javadoc"})
 public interface LibZMQLibrary extends Library {
-	public static final String JNA_LIBRARY_NAME = "libzmq";
-	public static final NativeLibrary JNA_NATIVE_LIB = NativeLibrary.getInstance(LibZMQLibrary.JNA_LIBRARY_NAME);
-	public static final LibZMQLibrary INSTANCE = (LibZMQLibrary)Native.loadLibrary(LibZMQLibrary.JNA_LIBRARY_NAME, LibZMQLibrary.class);
+	String JNA_LIBRARY_NAME = "libzmq";
+	NativeLibrary JNA_NATIVE_LIB = NativeLibrary.getInstance(LibZMQLibrary.JNA_LIBRARY_NAME);
+	LibZMQLibrary INSTANCE = Native.load(LibZMQLibrary.JNA_LIBRARY_NAME, LibZMQLibrary.class);
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_VERSION_MAJOR = (int)4;
+	int ZMQ_VERSION_MAJOR = 4;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_VERSION_MINOR = (int)3;
+	int ZMQ_VERSION_MINOR = 3;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_VERSION_PATCH = (int)2;
+	int ZMQ_VERSION_PATCH = 2;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_VERSION = (int)((4) * 10000 + (3) * 100 + (2));
+	int ZMQ_VERSION = (4) * 10000 + (3) * 100 + (2);
 	/** <i>native declaration : zmq.h</i> */
-	public static final int _WIN32_WINNT = (int)0x0600;
+	int _WIN32_WINNT = 0x0600;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_DEFINED_STDINT = (int)1;
+	int ZMQ_DEFINED_STDINT = 1;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_HAUSNUMERO = (int)156384712;
+	int ZMQ_HAUSNUMERO = 156384712;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int EFSM = (int)(156384712 + 51);
+	int EFSM = 156384712 + 51;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ENOCOMPATPROTO = (int)(156384712 + 52);
+	int ENOCOMPATPROTO = 156384712 + 52;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ETERM = (int)(156384712 + 53);
+	int ETERM = 156384712 + 53;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int EMTHREAD = (int)(156384712 + 54);
+	int EMTHREAD = 156384712 + 54;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_IO_THREADS = (int)1;
+	int ZMQ_IO_THREADS = 1;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_MAX_SOCKETS = (int)2;
+	int ZMQ_MAX_SOCKETS = 2;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_SOCKET_LIMIT = (int)3;
+	int ZMQ_SOCKET_LIMIT = 3;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_THREAD_PRIORITY = (int)3;
+	int ZMQ_THREAD_PRIORITY = 3;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_THREAD_SCHED_POLICY = (int)4;
+	int ZMQ_THREAD_SCHED_POLICY = 4;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_MAX_MSGSZ = (int)5;
+	int ZMQ_MAX_MSGSZ = 5;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_MSG_T_SIZE = (int)6;
+	int ZMQ_MSG_T_SIZE = 6;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_THREAD_AFFINITY_CPU_ADD = (int)7;
+	int ZMQ_THREAD_AFFINITY_CPU_ADD = 7;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_THREAD_AFFINITY_CPU_REMOVE = (int)8;
+	int ZMQ_THREAD_AFFINITY_CPU_REMOVE = 8;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_THREAD_NAME_PREFIX = (int)9;
+	int ZMQ_THREAD_NAME_PREFIX = 9;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_IO_THREADS_DFLT = (int)1;
+	int ZMQ_IO_THREADS_DFLT = 1;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_MAX_SOCKETS_DFLT = (int)1023;
+	int ZMQ_MAX_SOCKETS_DFLT = 1023;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_THREAD_PRIORITY_DFLT = (int)-1;
+	int ZMQ_THREAD_PRIORITY_DFLT = -1;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_THREAD_SCHED_POLICY_DFLT = (int)-1;
+	int ZMQ_THREAD_SCHED_POLICY_DFLT = -1;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_PAIR = (int)0;
+	int ZMQ_PAIR = 0;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_PUB = (int)1;
+	int ZMQ_PUB = 1;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_SUB = (int)2;
+	int ZMQ_SUB = 2;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_REQ = (int)3;
+	int ZMQ_REQ = 3;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_REP = (int)4;
+	int ZMQ_REP = 4;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_DEALER = (int)5;
+	int ZMQ_DEALER = 5;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_ROUTER = (int)6;
+	int ZMQ_ROUTER = 6;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_PULL = (int)7;
+	int ZMQ_PULL = 7;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_PUSH = (int)8;
+	int ZMQ_PUSH = 8;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_XPUB = (int)9;
+	int ZMQ_XPUB = 9;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_XSUB = (int)10;
+	int ZMQ_XSUB = 10;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_STREAM = (int)11;
+	int ZMQ_STREAM = 11;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_XREQ = (int)5;
+	int ZMQ_XREQ = 5;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_XREP = (int)6;
+	int ZMQ_XREP = 6;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_AFFINITY = (int)4;
+	int ZMQ_AFFINITY = 4;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_ROUTING_ID = (int)5;
+	int ZMQ_ROUTING_ID = 5;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_SUBSCRIBE = (int)6;
+	int ZMQ_SUBSCRIBE = 6;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_UNSUBSCRIBE = (int)7;
+	int ZMQ_UNSUBSCRIBE = 7;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_RATE = (int)8;
+	int ZMQ_RATE = 8;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_RECOVERY_IVL = (int)9;
+	int ZMQ_RECOVERY_IVL = 9;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_SNDBUF = (int)11;
+	int ZMQ_SNDBUF = 11;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_RCVBUF = (int)12;
+	int ZMQ_RCVBUF = 12;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_RCVMORE = (int)13;
+	int ZMQ_RCVMORE = 13;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_FD = (int)14;
+	int ZMQ_FD = 14;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_EVENTS = (int)15;
+	int ZMQ_EVENTS = 15;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_TYPE = (int)16;
+	int ZMQ_TYPE = 16;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_LINGER = (int)17;
+	int ZMQ_LINGER = 17;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_RECONNECT_IVL = (int)18;
+	int ZMQ_RECONNECT_IVL = 18;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_BACKLOG = (int)19;
+	int ZMQ_BACKLOG = 19;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_RECONNECT_IVL_MAX = (int)21;
+	int ZMQ_RECONNECT_IVL_MAX = 21;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_MAXMSGSIZE = (int)22;
+	int ZMQ_MAXMSGSIZE = 22;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_SNDHWM = (int)23;
+	int ZMQ_SNDHWM = 23;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_RCVHWM = (int)24;
+	int ZMQ_RCVHWM = 24;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_MULTICAST_HOPS = (int)25;
+	int ZMQ_MULTICAST_HOPS = 25;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_RCVTIMEO = (int)27;
+	int ZMQ_RCVTIMEO = 27;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_SNDTIMEO = (int)28;
+	int ZMQ_SNDTIMEO = 28;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_LAST_ENDPOINT = (int)32;
+	int ZMQ_LAST_ENDPOINT = 32;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_ROUTER_MANDATORY = (int)33;
+	int ZMQ_ROUTER_MANDATORY = 33;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_TCP_KEEPALIVE = (int)34;
+	int ZMQ_TCP_KEEPALIVE = 34;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_TCP_KEEPALIVE_CNT = (int)35;
+	int ZMQ_TCP_KEEPALIVE_CNT = 35;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_TCP_KEEPALIVE_IDLE = (int)36;
+	int ZMQ_TCP_KEEPALIVE_IDLE = 36;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_TCP_KEEPALIVE_INTVL = (int)37;
+	int ZMQ_TCP_KEEPALIVE_INTVL = 37;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_IMMEDIATE = (int)39;
+	int ZMQ_IMMEDIATE = 39;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_XPUB_VERBOSE = (int)40;
+	int ZMQ_XPUB_VERBOSE = 40;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_ROUTER_RAW = (int)41;
+	int ZMQ_ROUTER_RAW = 41;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_IPV6 = (int)42;
+	int ZMQ_IPV6 = 42;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_MECHANISM = (int)43;
+	int ZMQ_MECHANISM = 43;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_PLAIN_SERVER = (int)44;
+	int ZMQ_PLAIN_SERVER = 44;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_PLAIN_USERNAME = (int)45;
+	int ZMQ_PLAIN_USERNAME = 45;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_PLAIN_PASSWORD = (int)46;
+	int ZMQ_PLAIN_PASSWORD = 46;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_CURVE_SERVER = (int)47;
+	int ZMQ_CURVE_SERVER = 47;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_CURVE_PUBLICKEY = (int)48;
+	int ZMQ_CURVE_PUBLICKEY = 48;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_CURVE_SECRETKEY = (int)49;
+	int ZMQ_CURVE_SECRETKEY = 49;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_CURVE_SERVERKEY = (int)50;
+	int ZMQ_CURVE_SERVERKEY = 50;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_PROBE_ROUTER = (int)51;
+	int ZMQ_PROBE_ROUTER = 51;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_REQ_CORRELATE = (int)52;
+	int ZMQ_REQ_CORRELATE = 52;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_REQ_RELAXED = (int)53;
+	int ZMQ_REQ_RELAXED = 53;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_CONFLATE = (int)54;
+	int ZMQ_CONFLATE = 54;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_ZAP_DOMAIN = (int)55;
+	int ZMQ_ZAP_DOMAIN = 55;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_ROUTER_HANDOVER = (int)56;
+	int ZMQ_ROUTER_HANDOVER = 56;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_TOS = (int)57;
+	int ZMQ_TOS = 57;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_CONNECT_ROUTING_ID = (int)61;
+	int ZMQ_CONNECT_ROUTING_ID = 61;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_GSSAPI_SERVER = (int)62;
+	int ZMQ_GSSAPI_SERVER = 62;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_GSSAPI_PRINCIPAL = (int)63;
+	int ZMQ_GSSAPI_PRINCIPAL = 63;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_GSSAPI_SERVICE_PRINCIPAL = (int)64;
+	int ZMQ_GSSAPI_SERVICE_PRINCIPAL = 64;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_GSSAPI_PLAINTEXT = (int)65;
+	int ZMQ_GSSAPI_PLAINTEXT = 65;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_HANDSHAKE_IVL = (int)66;
+	int ZMQ_HANDSHAKE_IVL = 66;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_SOCKS_PROXY = (int)68;
+	int ZMQ_SOCKS_PROXY = 68;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_XPUB_NODROP = (int)69;
+	int ZMQ_XPUB_NODROP = 69;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_BLOCKY = (int)70;
+	int ZMQ_BLOCKY = 70;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_XPUB_MANUAL = (int)71;
+	int ZMQ_XPUB_MANUAL = 71;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_XPUB_WELCOME_MSG = (int)72;
+	int ZMQ_XPUB_WELCOME_MSG = 72;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_STREAM_NOTIFY = (int)73;
+	int ZMQ_STREAM_NOTIFY = 73;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_INVERT_MATCHING = (int)74;
+	int ZMQ_INVERT_MATCHING = 74;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_HEARTBEAT_IVL = (int)75;
+	int ZMQ_HEARTBEAT_IVL = 75;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_HEARTBEAT_TTL = (int)76;
+	int ZMQ_HEARTBEAT_TTL = 76;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_HEARTBEAT_TIMEOUT = (int)77;
+	int ZMQ_HEARTBEAT_TIMEOUT = 77;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_XPUB_VERBOSER = (int)78;
+	int ZMQ_XPUB_VERBOSER = 78;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_CONNECT_TIMEOUT = (int)79;
+	int ZMQ_CONNECT_TIMEOUT = 79;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_TCP_MAXRT = (int)80;
+	int ZMQ_TCP_MAXRT = 80;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_THREAD_SAFE = (int)81;
+	int ZMQ_THREAD_SAFE = 81;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_MULTICAST_MAXTPDU = (int)84;
+	int ZMQ_MULTICAST_MAXTPDU = 84;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_VMCI_BUFFER_SIZE = (int)85;
+	int ZMQ_VMCI_BUFFER_SIZE = 85;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_VMCI_BUFFER_MIN_SIZE = (int)86;
+	int ZMQ_VMCI_BUFFER_MIN_SIZE = 86;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_VMCI_BUFFER_MAX_SIZE = (int)87;
+	int ZMQ_VMCI_BUFFER_MAX_SIZE = 87;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_VMCI_CONNECT_TIMEOUT = (int)88;
+	int ZMQ_VMCI_CONNECT_TIMEOUT = 88;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_USE_FD = (int)89;
+	int ZMQ_USE_FD = 89;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_GSSAPI_PRINCIPAL_NAMETYPE = (int)90;
+	int ZMQ_GSSAPI_PRINCIPAL_NAMETYPE = 90;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_GSSAPI_SERVICE_PRINCIPAL_NAMETYPE = (int)91;
+	int ZMQ_GSSAPI_SERVICE_PRINCIPAL_NAMETYPE = 91;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_BINDTODEVICE = (int)92;
+	int ZMQ_BINDTODEVICE = 92;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_MORE = (int)1;
+	int ZMQ_MORE = 1;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_SHARED = (int)3;
+	int ZMQ_SHARED = 3;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_DONTWAIT = (int)1;
+	int ZMQ_DONTWAIT = 1;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_SNDMORE = (int)2;
+	int ZMQ_SNDMORE = 2;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_NULL = (int)0;
+	int ZMQ_NULL = 0;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_PLAIN = (int)1;
+	int ZMQ_PLAIN = 1;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_CURVE = (int)2;
+	int ZMQ_CURVE = 2;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_GSSAPI = (int)3;
+	int ZMQ_GSSAPI = 3;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_GROUP_MAX_LENGTH = (int)15;
+	int ZMQ_GROUP_MAX_LENGTH = 15;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_IDENTITY = (int)5;
+	int ZMQ_IDENTITY = 5;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_CONNECT_RID = (int)61;
+	int ZMQ_CONNECT_RID = 61;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_TCP_ACCEPT_FILTER = (int)38;
+	int ZMQ_TCP_ACCEPT_FILTER = 38;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_IPC_FILTER_PID = (int)58;
+	int ZMQ_IPC_FILTER_PID = 58;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_IPC_FILTER_UID = (int)59;
+	int ZMQ_IPC_FILTER_UID = 59;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_IPC_FILTER_GID = (int)60;
+	int ZMQ_IPC_FILTER_GID = 60;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_IPV4ONLY = (int)31;
+	int ZMQ_IPV4ONLY = 31;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_DELAY_ATTACH_ON_CONNECT = (int)39;
+	int ZMQ_DELAY_ATTACH_ON_CONNECT = 39;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_NOBLOCK = (int)1;
+	int ZMQ_NOBLOCK = 1;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_FAIL_UNROUTABLE = (int)33;
+	int ZMQ_FAIL_UNROUTABLE = 33;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_ROUTER_BEHAVIOR = (int)33;
+	int ZMQ_ROUTER_BEHAVIOR = 33;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_SRCFD = (int)2;
+	int ZMQ_SRCFD = 2;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_GSSAPI_NT_HOSTBASED = (int)0;
+	int ZMQ_GSSAPI_NT_HOSTBASED = 0;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_GSSAPI_NT_USER_NAME = (int)1;
+	int ZMQ_GSSAPI_NT_USER_NAME = 1;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_GSSAPI_NT_KRB5_PRINCIPAL = (int)2;
+	int ZMQ_GSSAPI_NT_KRB5_PRINCIPAL = 2;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_EVENT_CONNECTED = (int)0x0001;
+	int ZMQ_EVENT_CONNECTED = 0x0001;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_EVENT_CONNECT_DELAYED = (int)0x0002;
+	int ZMQ_EVENT_CONNECT_DELAYED = 0x0002;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_EVENT_CONNECT_RETRIED = (int)0x0004;
+	int ZMQ_EVENT_CONNECT_RETRIED = 0x0004;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_EVENT_LISTENING = (int)0x0008;
+	int ZMQ_EVENT_LISTENING = 0x0008;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_EVENT_BIND_FAILED = (int)0x0010;
+	int ZMQ_EVENT_BIND_FAILED = 0x0010;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_EVENT_ACCEPTED = (int)0x0020;
+	int ZMQ_EVENT_ACCEPTED = 0x0020;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_EVENT_ACCEPT_FAILED = (int)0x0040;
+	int ZMQ_EVENT_ACCEPT_FAILED = 0x0040;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_EVENT_CLOSED = (int)0x0080;
+	int ZMQ_EVENT_CLOSED = 0x0080;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_EVENT_CLOSE_FAILED = (int)0x0100;
+	int ZMQ_EVENT_CLOSE_FAILED = 0x0100;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_EVENT_DISCONNECTED = (int)0x0200;
+	int ZMQ_EVENT_DISCONNECTED = 0x0200;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_EVENT_MONITOR_STOPPED = (int)0x0400;
+	int ZMQ_EVENT_MONITOR_STOPPED = 0x0400;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_EVENT_ALL = (int)0xFFFF;
+	int ZMQ_EVENT_ALL = 0xFFFF;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_EVENT_HANDSHAKE_FAILED_NO_DETAIL = (int)0x0800;
+	int ZMQ_EVENT_HANDSHAKE_FAILED_NO_DETAIL = 0x0800;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_EVENT_HANDSHAKE_SUCCEEDED = (int)0x1000;
+	int ZMQ_EVENT_HANDSHAKE_SUCCEEDED = 0x1000;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_EVENT_HANDSHAKE_FAILED_PROTOCOL = (int)0x2000;
+	int ZMQ_EVENT_HANDSHAKE_FAILED_PROTOCOL = 0x2000;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_EVENT_HANDSHAKE_FAILED_AUTH = (int)0x4000;
+	int ZMQ_EVENT_HANDSHAKE_FAILED_AUTH = 0x4000;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_PROTOCOL_ERROR_ZMTP_UNSPECIFIED = (int)0x10000000;
+	int ZMQ_PROTOCOL_ERROR_ZMTP_UNSPECIFIED = 0x10000000;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_PROTOCOL_ERROR_ZMTP_UNEXPECTED_COMMAND = (int)0x10000001;
+	int ZMQ_PROTOCOL_ERROR_ZMTP_UNEXPECTED_COMMAND = 0x10000001;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_PROTOCOL_ERROR_ZMTP_INVALID_SEQUENCE = (int)0x10000002;
+	int ZMQ_PROTOCOL_ERROR_ZMTP_INVALID_SEQUENCE = 0x10000002;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_PROTOCOL_ERROR_ZMTP_KEY_EXCHANGE = (int)0x10000003;
+	int ZMQ_PROTOCOL_ERROR_ZMTP_KEY_EXCHANGE = 0x10000003;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_UNSPECIFIED = (int)0x10000011;
+	int ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_UNSPECIFIED = 0x10000011;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_MESSAGE = (int)0x10000012;
+	int ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_MESSAGE = 0x10000012;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_HELLO = (int)0x10000013;
+	int ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_HELLO = 0x10000013;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_INITIATE = (int)0x10000014;
+	int ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_INITIATE = 0x10000014;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_ERROR = (int)0x10000015;
+	int ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_ERROR = 0x10000015;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_READY = (int)0x10000016;
+	int ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_READY = 0x10000016;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_WELCOME = (int)0x10000017;
+	int ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_WELCOME = 0x10000017;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_PROTOCOL_ERROR_ZMTP_INVALID_METADATA = (int)0x10000018;
+	int ZMQ_PROTOCOL_ERROR_ZMTP_INVALID_METADATA = 0x10000018;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_PROTOCOL_ERROR_ZMTP_CRYPTOGRAPHIC = (int)0x11000001;
+	int ZMQ_PROTOCOL_ERROR_ZMTP_CRYPTOGRAPHIC = 0x11000001;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_PROTOCOL_ERROR_ZMTP_MECHANISM_MISMATCH = (int)0x11000002;
+	int ZMQ_PROTOCOL_ERROR_ZMTP_MECHANISM_MISMATCH = 0x11000002;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_PROTOCOL_ERROR_ZAP_UNSPECIFIED = (int)0x20000000;
+	int ZMQ_PROTOCOL_ERROR_ZAP_UNSPECIFIED = 0x20000000;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_PROTOCOL_ERROR_ZAP_MALFORMED_REPLY = (int)0x20000001;
+	int ZMQ_PROTOCOL_ERROR_ZAP_MALFORMED_REPLY = 0x20000001;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_PROTOCOL_ERROR_ZAP_BAD_REQUEST_ID = (int)0x20000002;
+	int ZMQ_PROTOCOL_ERROR_ZAP_BAD_REQUEST_ID = 0x20000002;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_PROTOCOL_ERROR_ZAP_BAD_VERSION = (int)0x20000003;
+	int ZMQ_PROTOCOL_ERROR_ZAP_BAD_VERSION = 0x20000003;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_PROTOCOL_ERROR_ZAP_INVALID_STATUS_CODE = (int)0x20000004;
+	int ZMQ_PROTOCOL_ERROR_ZAP_INVALID_STATUS_CODE = 0x20000004;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_PROTOCOL_ERROR_ZAP_INVALID_METADATA = (int)0x20000005;
+	int ZMQ_PROTOCOL_ERROR_ZAP_INVALID_METADATA = 0x20000005;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_POLLIN = (int)1;
+	int ZMQ_POLLIN = 1;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_POLLOUT = (int)2;
+	int ZMQ_POLLOUT = 2;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_POLLERR = (int)4;
+	int ZMQ_POLLERR = 4;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_POLLPRI = (int)8;
+	int ZMQ_POLLPRI = 8;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_POLLITEMS_DFLT = (int)16;
+	int ZMQ_POLLITEMS_DFLT = 16;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_HAS_CAPABILITIES = (int)1;
+	int ZMQ_HAS_CAPABILITIES = 1;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_STREAMER = (int)1;
+	int ZMQ_STREAMER = 1;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_FORWARDER = (int)2;
+	int ZMQ_FORWARDER = 2;
 	/** <i>native declaration : zmq.h</i> */
-	public static final int ZMQ_QUEUE = (int)3;
+	int ZMQ_QUEUE = 3;
 	/** <i>native declaration : zmq.h:45</i> */
-	public interface zmq_free_fn extends Callback {
+	interface zmq_free_fn extends Callback {
 		void apply(Pointer data_, Pointer hint_);
-	};
+	}
+
 	/**
 	 * /<br>
 	 * <i>native declaration : zmq.h:172</i>
 	 */
-	public interface zmq_timer_fn extends Callback {
+	interface zmq_timer_fn extends Callback {
 		void apply(int timer_id, Pointer arg);
-	};
+	}
+
 	/** <i>native declaration : zmq.h:209</i> */
-	public interface zmq_thread_fn extends Callback {
+	interface zmq_thread_fn extends Callback {
 		void apply(Pointer voidPtr1);
-	};
+	}
+
 	/**
 	 * application that uses different CRT library.<br>
 	 * Original signature : <code>int zmq_errno()</code><br>
@@ -423,7 +427,7 @@ public interface LibZMQLibrary extends Library {
 	 * <i>native declaration : zmq.h:14</i><br>
 	 * @deprecated use the safer methods {@link #zmq_version(IntBuffer, IntBuffer, IntBuffer)} and {@link #zmq_version(IntByReference, IntByReference, IntByReference)} instead
 	 */
-	@Deprecated 
+	@Deprecated
 	void zmq_version(IntByReference major_, IntByReference minor_, IntByReference patch_);
 	/**
 	 * Run-time API version detection<br>
@@ -541,9 +545,9 @@ public interface LibZMQLibrary extends Library {
 	/**
 	 * Original signature : <code>char* zmq_msg_gets(const zmq_msg_t*, const char*)</code><br>
 	 * <i>native declaration : zmq.h:73</i><br>
-	 * @deprecated use the safer methods {@link #zmq_msg_gets(libzmq.zmq_msg_t, String)} and {@link #zmq_msg_gets(libzmq.zmq_msg_t, Pointer)} instead
+	 * @deprecated use the safer methods zmq_msg_gets(libzmq.zmq_msg_t, String) and #zmq_msg_gets(libzmq.zmq_msg_t, Pointer) instead
 	 */
-	@Deprecated 
+	@Deprecated
 	Pointer zmq_msg_gets(zmq_msg_t msg_, Pointer property_);
 	/**
 	 * Original signature : <code>char* zmq_msg_gets(const zmq_msg_t*, const char*)</code><br>
@@ -576,7 +580,7 @@ public interface LibZMQLibrary extends Library {
 	 * <i>native declaration : zmq.h:86</i><br>
 	 * @deprecated use the safer methods {@link #zmq_bind(Pointer, String)} and {@link #zmq_bind(Pointer, Pointer)} instead
 	 */
-	@Deprecated 
+	@Deprecated
 	int zmq_bind(Pointer s_, Pointer addr_);
 	/**
 	 * Original signature : <code>int zmq_bind(void*, const char*)</code><br>
@@ -588,7 +592,7 @@ public interface LibZMQLibrary extends Library {
 	 * <i>native declaration : zmq.h:88</i><br>
 	 * @deprecated use the safer methods {@link #zmq_connect(Pointer, String)} and {@link #zmq_connect(Pointer, Pointer)} instead
 	 */
-	@Deprecated 
+	@Deprecated
 	int zmq_connect(Pointer s_, Pointer addr_);
 	/**
 	 * Original signature : <code>int zmq_connect(void*, const char*)</code><br>
@@ -600,7 +604,7 @@ public interface LibZMQLibrary extends Library {
 	 * <i>native declaration : zmq.h:90</i><br>
 	 * @deprecated use the safer methods {@link #zmq_unbind(Pointer, String)} and {@link #zmq_unbind(Pointer, Pointer)} instead
 	 */
-	@Deprecated 
+	@Deprecated
 	int zmq_unbind(Pointer s_, Pointer addr_);
 	/**
 	 * Original signature : <code>int zmq_unbind(void*, const char*)</code><br>
@@ -612,7 +616,7 @@ public interface LibZMQLibrary extends Library {
 	 * <i>native declaration : zmq.h:92</i><br>
 	 * @deprecated use the safer methods {@link #zmq_disconnect(Pointer, String)} and {@link #zmq_disconnect(Pointer, Pointer)} instead
 	 */
-	@Deprecated 
+	@Deprecated
 	int zmq_disconnect(Pointer s_, Pointer addr_);
 	/**
 	 * Original signature : <code>int zmq_disconnect(void*, const char*)</code><br>
@@ -639,7 +643,7 @@ public interface LibZMQLibrary extends Library {
 	 * <i>native declaration : zmq.h:100</i><br>
 	 * @deprecated use the safer methods {@link #zmq_socket_monitor(Pointer, String, int)} and {@link #zmq_socket_monitor(Pointer, Pointer, int)} instead
 	 */
-	@Deprecated 
+	@Deprecated
 	int zmq_socket_monitor(Pointer s_, Pointer addr_, int events_);
 	/**
 	 * Original signature : <code>int zmq_socket_monitor(void*, const char*, int)</code><br>
@@ -668,7 +672,7 @@ public interface LibZMQLibrary extends Library {
 	 * <i>native declaration : zmq.h:121</i><br>
 	 * @deprecated use the safer methods {@link #zmq_has(String)} and {@link #zmq_has(Pointer)} instead
 	 */
-	@Deprecated 
+	@Deprecated
 	int zmq_has(Pointer capability_);
 	/**
 	 * /<br>
@@ -708,21 +712,21 @@ public interface LibZMQLibrary extends Library {
 	 * <i>native declaration : zmq.h:140</i><br>
 	 * @deprecated use the safer methods {@link #zmq_z85_encode(ByteBuffer, byte[], com.ochafik.lang.jnaerator.runtime.NativeSize)} and {@link #zmq_z85_encode(Pointer, Pointer, com.ochafik.lang.jnaerator.runtime.NativeSize)} instead
 	 */
-	@Deprecated 
+	@Deprecated
 	Pointer zmq_z85_encode(Pointer dest_, Pointer data_, NativeSize size_);
 	/**
 	 * Encode data with Z85 encoding. Returns encoded data<br>
 	 * Original signature : <code>char* zmq_z85_encode(char*, const uint8_t*, size_t)</code><br>
 	 * <i>native declaration : zmq.h:140</i>
 	 */
-	Pointer zmq_z85_encode(ByteBuffer dest_, byte data_[], NativeSize size_);
+	Pointer zmq_z85_encode(ByteBuffer dest_, byte[] data_, NativeSize size_);
 	/**
 	 * Decode data with Z85 encoding. Returns decoded data<br>
 	 * Original signature : <code>uint8_t* zmq_z85_decode(uint8_t*, const char*)</code><br>
 	 * <i>native declaration : zmq.h:145</i><br>
 	 * @deprecated use the safer methods {@link #zmq_z85_decode(ByteBuffer, String)} and {@link #zmq_z85_decode(Pointer, Pointer)} instead
 	 */
-	@Deprecated 
+	@Deprecated
 	Pointer zmq_z85_decode(Pointer dest_, Pointer string_);
 	/**
 	 * Decode data with Z85 encoding. Returns decoded data<br>
@@ -736,7 +740,7 @@ public interface LibZMQLibrary extends Library {
 	 * <i>native declaration : zmq.h:150</i><br>
 	 * @deprecated use the safer methods {@link #zmq_curve_keypair(ByteBuffer, ByteBuffer)} and {@link #zmq_curve_keypair(Pointer, Pointer)} instead
 	 */
-	@Deprecated 
+	@Deprecated
 	int zmq_curve_keypair(Pointer z85_public_key_, Pointer z85_secret_key_);
 	/**
 	 * Returns 0 on success.<br>
@@ -750,7 +754,7 @@ public interface LibZMQLibrary extends Library {
 	 * <i>native declaration : zmq.h:155</i><br>
 	 * @deprecated use the safer methods {@link #zmq_curve_public(ByteBuffer, String)} and {@link #zmq_curve_public(Pointer, Pointer)} instead
 	 */
-	@Deprecated 
+	@Deprecated
 	int zmq_curve_public(Pointer z85_public_key_, Pointer z85_secret_key_);
 	/**
 	 * Returns 0 on success.<br>
@@ -865,28 +869,29 @@ public interface LibZMQLibrary extends Library {
 	 * <i>native declaration : zmq.h:219</i>
 	 */
 	void zmq_threadclose(Pointer thread_);
-	public static class iovec extends PointerType {
+	class iovec extends PointerType {
 		public iovec(Pointer address) {
 			super(address);
 		}
 		public iovec() {
 			super();
 		}
-	};
-	public static class SOCKET extends PointerType {
+	}
+
+	class SOCKET extends PointerType {
 		public SOCKET(Pointer address) {
 			super(address);
 		}
 		public SOCKET() {
 			super();
 		}
-	};
+	}
 
 	/*
 	 added stuff
 	 */
-	public static final int ZMQ_RADIO = 14;
-	public static final int ZMQ_DISH = 15;
+	int ZMQ_RADIO = 14;
+	int ZMQ_DISH = 15;
 	int zmq_join(Pointer socket, String groupName);
 	int zmq_msg_set_group(zmq_msg_t msg, String groupName);
 
