@@ -3,7 +3,6 @@ package de.unikassel.vs.pdDebug;
 import com.ochafik.lang.jnaerator.runtime.NativeSize;
 import com.sun.jna.Memory;
 import com.sun.jna.Pointer;
-import com.sun.jna.ptr.IntByReference;
 
 import de.unikassel.vs.pdDebug.capnzero.Capnzero;
 import de.unikassel.vs.pdDebug.libzmq.zmq_msg_t;
@@ -20,7 +19,7 @@ public class Publisher {
     static final String TCP_ADDRESS = "127.0.0.1:5555";
     static final String IPC_ADDRESS = "128.0.0.1:5555";
 
-    private CommType commType = CommType.UDP;
+    private Protocol protocol = Protocol.UDP;
     private String groupName;
     private Pointer socket;
     private Pointer context;
@@ -37,18 +36,18 @@ public class Publisher {
         Subscriber sub = new Subscriber();
         //sub.setContext(pub.getContext());
 
-        switch (pub.commType) {
+        switch (pub.protocol) {
             case UDP:
-                pub.bind(pub.commType, UDP_ADDRESS);
-                sub.subscribe(pub.commType, UDP_ADDRESS);
+                pub.bind(pub.protocol, UDP_ADDRESS);
+                sub.subscribe(pub.protocol, UDP_ADDRESS);
                 break;
             case TCP:
-                pub.bind(pub.commType, TCP_ADDRESS);
-                sub.subscribe(pub.commType, TCP_ADDRESS);
+                pub.bind(pub.protocol, TCP_ADDRESS);
+                sub.subscribe(pub.protocol, TCP_ADDRESS);
                 break;
             case IPC:
-                pub.bind(pub.commType, IPC_ADDRESS);
-                sub.subscribe(pub.commType, IPC_ADDRESS);
+                pub.bind(pub.protocol, IPC_ADDRESS);
+                sub.subscribe(pub.protocol, IPC_ADDRESS);
                 break;
         }
 
@@ -106,9 +105,9 @@ public class Publisher {
         check(INSTANCE.zmq_ctx_term(context), "zmq_ctx_term");
     }
 
-    public void bind(CommType commType, String address) {
-        this.commType = commType;
-        switch (commType) {
+    public void bind(Protocol protocol, String address) {
+        this.protocol = protocol;
+        switch (protocol) {
             case UDP:
                 socket = INSTANCE.zmq_socket(context, ZMQ_RADIO);
                 check(INSTANCE.zmq_connect(socket, "udp://" + address), "zmq_connect");
@@ -135,15 +134,15 @@ public class Publisher {
         NativeSize size = new NativeSize(str.length());
         check(INSTANCE.zmq_msg_init_data(msg, mem, size, null, null), "zmq_msg_init_data");
         check(INSTANCE.zmq_msg_set_group(msg, groupName), "zmq_msg_set_group");
-        System.out.print("(" + commType.toString() + ") Sending on Group \"" + groupName + "\": \"" + str + "\"");
+        System.out.print("(" + protocol.toString() + ") Sending on Group \"" + groupName + "\": \"" + str + "\"");
         int bytes = INSTANCE.zmq_msg_send(msg, socket, 0);
         System.out.println(" (" + bytes + " bytes)" + (bytes < 0 ? "... FAILED" : "... OK"));
         check(INSTANCE.zmq_msg_close(msg), "zmq_msg_close");
     }
 
     public void sendSerializedMessage(String msg_send) {
-        System.out.print("(" + commType.toString() + ") Sending on Group \"" + groupName + "\": \"" + msg_send + "\"");
-        int numBytesSent = Capnzero.sendMessage(this.socket, this.commType.ordinal(), this.groupName, msg_send);
+        System.out.print("(" + protocol.toString() + ") Sending on Group \"" + groupName + "\": \"" + msg_send + "\"");
+        int numBytesSent = Capnzero.sendMessage(this.socket, this.protocol.ordinal(), this.groupName, msg_send);
         System.out.println(" (" + numBytesSent + " bytes)" + (numBytesSent < 0 ? "... FAILED" : "... OK"));
     }
 
@@ -168,8 +167,8 @@ public class Publisher {
         return socket;
     }
 
-    public CommType getCommType() {
-        return commType;
+    public Protocol getProtocol() {
+        return protocol;
     }
 
     public String getGroupName() {

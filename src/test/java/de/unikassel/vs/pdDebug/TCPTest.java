@@ -7,7 +7,7 @@ import java.util.ArrayList;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TCPTest {
 
-    CommType type = CommType.TCP;
+    Protocol type = Protocol.TCP;
     String address = Publisher.TCP_ADDRESS;
 
     Publisher pub;

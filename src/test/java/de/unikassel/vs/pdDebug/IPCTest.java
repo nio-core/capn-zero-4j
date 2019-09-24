@@ -7,7 +7,7 @@ import java.util.ArrayList;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class IPCTest {
 
-    CommType type = CommType.IPC;
+    Protocol type = Protocol.IPC;
     String address = Publisher.IPC_ADDRESS;
 
     Publisher pub;

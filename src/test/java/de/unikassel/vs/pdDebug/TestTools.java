@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class TestTools {
 
-    public void testOnePubManySub(ArrayList<Publisher> pubList, ArrayList<Subscriber> subList, int socketSize, int testSize, CommType type, String address) {
+    public void testOnePubManySub(ArrayList<Publisher> pubList, ArrayList<Subscriber> subList, int socketSize, int testSize, Protocol type, String address) {
 
         Publisher pub = new Publisher();
         pub.bind(type, address);
@@ -34,7 +34,7 @@ public class TestTools {
         }
     }
 
-    public void testManyPubOneSub(ArrayList<Publisher> pubList, ArrayList<Subscriber> subList, int socketSize, int testSize, CommType type, String address) {
+    public void testManyPubOneSub(ArrayList<Publisher> pubList, ArrayList<Subscriber> subList, int socketSize, int testSize, Protocol type, String address) {
 
         Subscriber sub = new Subscriber();
         subList.add(sub);

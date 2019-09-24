@@ -13,7 +13,7 @@ import static de.unikassel.vs.pdDebug.libzmq.LibZMQLibrary.*;
 public class Subscriber {
     final boolean DEBUG = false;
 
-    private CommType commType = CommType.UDP;
+    private Protocol protocol = Protocol.UDP;
     private String groupName = "TestGroupName";
     private Pointer socket;
     private Pointer context;
@@ -34,8 +34,8 @@ public class Subscriber {
         check(INSTANCE.zmq_ctx_term(context), "zmq_ctx_term");
     }
 
-    public void subscribe(CommType commType, String address) {
-        this.commType = commType;
+    public void subscribe(Protocol protocol, String address) {
+        this.protocol = protocol;
 
         IntByReference timeout = new IntByReference(500);
         NativeSize optValLen = new NativeSize(4);
@@ -45,7 +45,7 @@ public class Subscriber {
         m.setString(0, emptyString);
         NativeSize optValLenM = new NativeSize(0);
 
-        switch (commType) {
+        switch (protocol) {
             case UDP:
                 socket = INSTANCE.zmq_socket(context, ZMQ_DISH);
                 check(INSTANCE.zmq_setsockopt(socket, ZMQ_RCVTIMEO, timeout.getPointer(), optValLen), "zmq_setsockopt");
@@ -110,8 +110,8 @@ public class Subscriber {
     }
 
     public String getSerializedMessage() {
-        String message = Capnzero.receiveSerializedMessage(socket, commType.ordinal());
-        System.out.println("Received \"" + message + "\".");
+        String message = Capnzero.receiveSerializedMessage(socket, protocol.ordinal());
+        System.out.println("Received serialized \"" + message + "\".");
         return message;
     }
 
@@ -148,8 +148,8 @@ public class Subscriber {
         return socket;
     }
 
-    public CommType getCommType() {
-        return commType;
+    public Protocol getProtocol() {
+        return protocol;
     }
 
     public String getGroupName() {

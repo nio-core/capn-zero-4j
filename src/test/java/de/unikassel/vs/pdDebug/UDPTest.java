@@ -7,7 +7,7 @@ import java.util.ArrayList;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UDPTest {
 
-    CommType type = CommType.UDP;
+    Protocol type = Protocol.UDP;
     String address = Publisher.UDP_ADDRESS;
 
     Publisher pub;
