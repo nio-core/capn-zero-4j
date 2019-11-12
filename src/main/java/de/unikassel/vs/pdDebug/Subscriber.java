@@ -110,8 +110,11 @@ public class Subscriber {
     }
 
     public String getSerializedMessage() {
-        String message = Capnzero.receiveSerializedMessage(socket, protocol.ordinal());
-        System.out.println("Received serialized \"" + message + "\".");
+        //String message = Capnzero.receiveSerializedMessage(socket, protocol.ordinal());
+        //System.out.println("Received serialized \"" + message + "\".");
+        Pointer strPointer = Capnzero.receiveSerializedMessage(socket, protocol.ordinal());
+        String message = strPointer.getString(0);
+        Capnzero.freeStr(strPointer);
         return message;
     }
 

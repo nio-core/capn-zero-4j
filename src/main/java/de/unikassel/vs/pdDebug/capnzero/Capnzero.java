@@ -6,7 +6,8 @@ import com.sun.jna.Pointer;
 public class Capnzero {
 
     public static native int sendMessage(Pointer socket, int commType, String topic, String message);
-    public static native String receiveSerializedMessage(Pointer socket, int commType);
+    public static native Pointer receiveSerializedMessage(Pointer socket, int commType);
+    public static native void freeStr(Pointer str);
 
     static {
         // https://github.com/dasys-lab/capnzerowrapper/
