@@ -18,11 +18,11 @@ public class Subscriber {
     private Pointer socket;
     private Pointer context;
 
-    Subscriber() {
+    public Subscriber() {
         this(INSTANCE.zmq_ctx_new());
     }
 
-    Subscriber(Pointer context) {
+    public Subscriber(Pointer context) {
         this.context = context;
     }
 
