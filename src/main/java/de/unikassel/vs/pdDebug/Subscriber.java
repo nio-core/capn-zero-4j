@@ -115,6 +115,7 @@ public class Subscriber {
         Pointer strPointer = Capnzero.receiveSerializedMessage(socket, protocol.ordinal());
         String message = strPointer.getString(0);
         String[] id_message = message.split("::");
+        if(id_message.length < 2) return "";
         int msgId = Integer.parseInt(id_message[0]);
         Capnzero.freeStr(msgId);
         return id_message[1];
