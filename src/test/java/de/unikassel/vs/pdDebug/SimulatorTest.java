@@ -32,7 +32,7 @@ public class SimulatorTest {
                 System.out.print(".");
             }
             try {
-                Thread.sleep(500);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -7,7 +7,7 @@ public class Capnzero {
 
     public static native int sendMessage(Pointer socket, int commType, String topic, String message);
     public static native Pointer receiveSerializedMessage(Pointer socket, int commType);
-    public static native void freeStr(Pointer str);
+    public static native void freeStr(int id);
 
     static {
         // https://github.com/dasys-lab/capnzerowrapper/
