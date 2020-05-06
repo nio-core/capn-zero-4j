@@ -105,7 +105,11 @@ public class Subscriber {
             System.out.println(nameOfMethod + " returned: " + returnCode);
         }
         if (returnCode != 0) {
-            System.err.println(nameOfMethod + " returned: " + returnCode);
+            System.err.print(nameOfMethod + " returned " + returnCode + ": ");
+            int errno = INSTANCE.zmq_errno();
+            Pointer strPointer = INSTANCE.zmq_strerror(errno);
+            String strerror = strPointer.getString(0);
+            System.err.println(strerror);
         }
     }
 
