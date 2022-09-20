@@ -1,2 +1,2 @@
-# capnzero4j
+# capn-zero-4j
 CapnZero for Java
